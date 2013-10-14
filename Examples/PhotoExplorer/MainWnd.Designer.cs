@@ -38,8 +38,6 @@
             this.ItemName = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.mainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopDownloadingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.downloadAllFriendsPhotosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.reauthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadAudioListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -147,8 +145,6 @@
             // mainToolStripMenuItem
             // 
             this.mainToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.stopDownloadingToolStripMenuItem,
-            this.downloadAllFriendsPhotosToolStripMenuItem,
             this.toolStripMenuItem2,
             this.reauthToolStripMenuItem,
             this.reloadAudioListToolStripMenuItem,
@@ -159,22 +155,6 @@
             this.mainToolStripMenuItem.Name = "mainToolStripMenuItem";
             this.mainToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.mainToolStripMenuItem.Text = "Main";
-            // 
-            // stopDownloadingToolStripMenuItem
-            // 
-            this.stopDownloadingToolStripMenuItem.Enabled = false;
-            this.stopDownloadingToolStripMenuItem.Name = "stopDownloadingToolStripMenuItem";
-            this.stopDownloadingToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.stopDownloadingToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.stopDownloadingToolStripMenuItem.Text = "Stop downloading!";
-            this.stopDownloadingToolStripMenuItem.Click += new System.EventHandler(this.stopDownloadingToolStripMenuItem_Click);
-            // 
-            // downloadAllFriendsPhotosToolStripMenuItem
-            // 
-            this.downloadAllFriendsPhotosToolStripMenuItem.Name = "downloadAllFriendsPhotosToolStripMenuItem";
-            this.downloadAllFriendsPhotosToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.downloadAllFriendsPhotosToolStripMenuItem.Text = "Download all friends photos";
-            this.downloadAllFriendsPhotosToolStripMenuItem.Click += new System.EventHandler(this.downloadAllFriendsPhotosToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -243,7 +223,6 @@
             this.AlbumsList.Name = "AlbumsList";
             this.AlbumsList.Size = new System.Drawing.Size(431, 434);
             this.AlbumsList.TabIndex = 5;
-            this.AlbumsList.SelectedIndexChanged += new System.EventHandler(this.AlbumsList_SelectedIndexChanged);
             // 
             // toolStrip1
             // 
@@ -367,7 +346,6 @@
             this.Controls.Add(this.statusStrip1);
             this.Name = "MainWnd";
             this.Text = "Form1";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWnd_FormClosing);
             this.Shown += new System.EventHandler(this.MainWnd_Shown);
             this.Resize += new System.EventHandler(this.MainWnd_Resize);
             this.DownloadPanel.ResumeLayout(false);
@@ -412,9 +390,7 @@
         private System.Windows.Forms.ToolStripButton Big;
         private System.Windows.Forms.ToolStripButton X;
         private System.Windows.Forms.ToolStripButton Xx;
-        private System.Windows.Forms.ToolStripMenuItem stopDownloadingToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem downloadAllFriendsPhotosToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar FriendsProgress;
         private System.Windows.Forms.ContextMenuStrip FriendListMenu;

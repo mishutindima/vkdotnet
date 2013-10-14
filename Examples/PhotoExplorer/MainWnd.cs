@@ -12,18 +12,12 @@ using System.Diagnostics;
 using ApiCore;
 using ApiCore.Friends;
 using ApiCore.Photos;
-using HttpDownloader;
 
 namespace PhotoExplorer
 {
     public partial class MainWnd : Form
     {
         private string appTitle = "Photo Explorer";
-        //private string version = "0.1";
-
-        private string downloadLabelTemplate = "{0}/{1} File: {2}";
-        private string pathToPhotosStore = null;
-
         private SessionInfo sessionInfo;
         private ApiManager manager;
 
@@ -45,7 +39,6 @@ namespace PhotoExplorer
         private List<AlbumEntry> albumList;
         private List<PhotoEntryFull> photoList;
 
-        private HttpDownloaderFactory httpDownloader;
         private FriendsFactory friendFactory;
         private PhotosFactory photoFactory;
 
@@ -61,11 +54,6 @@ namespace PhotoExplorer
         {
             this.DownloadPanel.Top = this.Height / 2 - this.DownloadPanel.Height / 2;
             this.DownloadPanel.Left = this.Width / 2 - this.DownloadPanel.Width / 2;
-        }
-
-        private void MainWnd_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            this.StopDownload();
         }
 
         private void MainWnd_Shown(object sender, EventArgs e)
@@ -86,12 +74,6 @@ namespace PhotoExplorer
         {
             this.selectedFriend = this.friendList[((ListBox)sender).SelectedIndex];
             this.LoadUserAlbums(this.selectedFriend.Id);
-        }
-
-        private void AlbumsList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.selectedAlbum = this.albumList[((ListBox)sender).SelectedIndex];
-            this.LoadAlbumPhotos(this.selectedAlbum);
         }
 
         private void UserId_KeyDown(object sender, KeyEventArgs e)
@@ -138,110 +120,12 @@ namespace PhotoExplorer
             this.ShowAboutBox();
         }
 
-        private long DownloadFile(string url, string path)
-        {
-            try
-            {
-                this.ItemName.Text = string.Format(this.downloadLabelTemplate,this.itemsDownloaded, this.photosInAlbum, Path.GetFileName(url));
-                httpDownloader = new HttpDownloaderFactory(url);
-                httpDownloader.DownloadProgress += (s, e) =>
-                {
-                    this.CurrentProgress.Value = (int)e.PercentComplete;
-                    Application.DoEvents();
-                };
-                return httpDownloader.DownloadToFile(path + Path.GetFileName(url), true);
-            }
-            catch 
-            {
-                return 0;
-            }
-        }
-
-        private void DownloadAlbum(AlbumEntry album, List<PhotoEntryFull> photos)
-        {
-            try
-            {
-                if (this.pathToPhotosStore == null)
-                {
-                    if (FB.ShowDialog() == DialogResult.OK)
-                    {
-                        this.pathToPhotosStore = FB.SelectedPath;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                    Regex r = new Regex(@"[^A-Za-zA-Яа-я0-9\ \,\.\!\+\=\)\(\&\%\$\#\@\-\{\}\[\]]");
-                    Regex ra = new Regex(@"[^A-Za-zA-Яа-я0-9\ \!\+\=\)\(\&\%\$\#\@\-\{\}\[\]]");
-                    string path = this.pathToPhotosStore + "\\" + ((this.selectedFriend != null) ? r.Replace(this.selectedFriend.ToString(), "_") : UserId.Text) + "\\" + ra.Replace(album.Title, "_") + "\\";
-                    
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-
-                    this.photosInAlbum = album.Size;
-                    this.downloadInProgress = true;
-                    stopDownloadingToolStripMenuItem.Enabled = true;
-                    this.TotalProgress.Maximum = album.Size;
-                    this.DownloadPanel.Visible = true;
-                    this.TotalProgress.Value = 0;
-                    this.FriendList.Enabled = false;
-                    this.AlbumsList.Enabled = false;
-
-                    this.itemsDownloaded = 1;
-
-                    for (int friendId = 0; friendId < photos.Count; friendId++)
-                    {
-                        if (!this.exitPending)
-                        {
-                            if (Small.Checked && photos[friendId].UrlSmall != "")
-                            {
-                                this.DownloadFile(photos[friendId].UrlSmall, path);
-                            }
-                            if (Big.Checked && photos[friendId].UrlBig != "")
-                            {
-                                this.DownloadFile(photos[friendId].UrlBig, path);
-                            }
-                            if (Thumb.Checked && photos[friendId].Url != "")
-                            {
-                                this.DownloadFile(photos[friendId].Url, path);
-                            }
-                            if (X.Checked && photos[friendId].UrlXBig != "")
-                            {
-                                this.DownloadFile(photos[friendId].UrlXBig, path);
-                            }
-                            if (Xx.Checked && photos[friendId].UrlXXBig != "")
-                            {
-                                this.DownloadFile(photos[friendId].UrlXXBig, path);
-                            }
-
-                                this.TotalProgress.Value++;
-                                this.itemsDownloaded++;
-                        }
-                    }
-
-                    this.DownloadPanel.Visible = false;
-                    this.FriendList.Enabled = true;
-                    this.AlbumsList.Enabled = true;
-                    this.downloadInProgress = false;
-
-            }
-            catch (Exception e)
-            {
-                this.StopDownload();
-                MessageBox.Show("Some errors ocurred while downloading photos:\n" + e.Message);
-            }
-        }
-
         private void Reauth()
         {
             if (!this.isLoggedIn)
             {
                 SessionManager sm = new SessionManager(1928531, Convert.ToInt32(ApiPerms.Audio | ApiPerms.ExtendedMessages | ApiPerms.ExtendedWall | ApiPerms.Friends | ApiPerms.Offers | ApiPerms.Photos | ApiPerms.Questions | ApiPerms.SendNotify | ApiPerms.SidebarLink | ApiPerms.UserNotes | ApiPerms.UserStatus | ApiPerms.Video | ApiPerms.WallPublisher | ApiPerms.Wiki));
-                //sm.Log += new SessionManagerLogHandler(sm_Log);
-                this.sessionInfo = sm.GetSession();
+                this.sessionInfo = sm.GetOAuthSession();
                 if (this.sessionInfo != null)
                 {
                     this.isLoggedIn = true;
@@ -303,60 +187,11 @@ namespace PhotoExplorer
             }
         }
 
-        private void LoadAlbumPhotos(AlbumEntry album)
-        {
-            List<PhotoEntryFull> photoList = this.photoFactory.GetPhotos(album.OwnerId, album.Id, null, null, null);
-            if (photoList.Count > 0)
-            {
-                this.DownloadAlbum(album, photoList);
-            }
-        }
-
         private void ShowAboutBox()
         {
             Process p = new Process();
             p.StartInfo.FileName = "http://xternalx.com";
             p.Start();
         }
-
-        private void StopDownload()
-        {
-            this.exitPending = true;
-            if (this.httpDownloader != null)
-            {
-                this.httpDownloader.Stop();
-            }
-            this.DownloadPanel.Visible = false;
-            stopDownloadingToolStripMenuItem.Enabled = false;
-            this.downloadInProgress = false;
-            this.AlbumsList.Enabled = true;
-            this.FriendList.Enabled = true;
-        }
-
-        private void stopDownloadingToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.StopDownload();
-        }
-
-        private void downloadAllFriendsPhotosToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.FriendsProgress.Maximum = this.friendList.Count;
-            this.FriendsProgress.Value = 0;
-            foreach (Friend f in this.friendList)
-            {
-                this.selectedFriend = f;
-                this.LoadUserAlbums(f.Id);
-                foreach(AlbumEntry a in this.albumList)
-                {
-                    this.LoadAlbumPhotos(a);
-                }
-                this.FriendsProgress.Value++;
-            }
-        }
-
-        
-
-
-
     }
 }
