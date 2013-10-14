@@ -115,13 +115,6 @@ namespace ApiCore
         {
             this.appId = si.AppId;
             this.session = si;
-            this.OnCapthaRequired += new ApiManagerCapthaRequired(ApiManager_CapthaRequired);
-        }
-
-        void ApiManager_CapthaRequired(object sender, string url, string hash)
-        {
-            ApiCore.Handlers.CapthaWnd wnd = new CapthaWnd(this, url, hash);
-            wnd.ShowDialog();
         }
 
         #region events

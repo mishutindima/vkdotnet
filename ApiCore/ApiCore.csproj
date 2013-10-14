@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ApiCore</RootNamespace>
     <AssemblyName>ApiCore</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,19 +48,13 @@
   <ItemGroup>
     <Compile Include="3rdParty\JSON.cs" />
     <Compile Include="Handlers\BaseHandlers.cs" />
-    <Compile Include="Handlers\CapthaWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Handlers\CapthaWnd.Designer.cs">
-      <DependentUpon>CapthaWnd.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utils\ApiPermissions.cs" />
     <Compile Include="Utils\Authorization\Exceptions\AuthorizationFailedException.cs" />
-    <Compile Include="Utils\Authorization\OAuth\Relogin.cs">
+    <Compile Include="Utils\Authorization\OAuth\OAuthWnd.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Utils\Authorization\OAuth\Relogin.Designer.cs">
-      <DependentUpon>Relogin.cs</DependentUpon>
+    <Compile Include="Utils\Authorization\OAuth\OAuthWnd.Designer.cs">
+      <DependentUpon>OAuthWnd.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\EntityBuilder.cs" />
     <Compile Include="Utils\Metadata.cs" />
@@ -67,12 +64,6 @@
     <Compile Include="Utils\Authorization\IVKAuthProvider.cs" />
     <Compile Include="Utils\Authorization\OAuth\OAuth.cs" />
     <Compile Include="Utils\Authorization\AuthDisplay.cs" />
-    <Compile Include="Utils\Authorization\OAuth\OAuthWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Utils\Authorization\OAuth\OAuthWnd.Designer.cs">
-      <DependentUpon>OAuthWnd.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utils\SessionManager\Sessions\OAuthSessionInfo.cs" />
     <Compile Include="Utils\SessionManager\Sessions\SessionInfo.cs" />
     <Compile Include="Utils\SessionManager\SessionManager.cs" />
@@ -153,15 +144,8 @@
     <Folder Include="Wrappers\Video\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Handlers\CapthaWnd.resx">
-      <DependentUpon>CapthaWnd.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Utils\Authorization\OAuth\OAuthWnd.resx">
       <DependentUpon>OAuthWnd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Utils\Authorization\OAuth\Relogin.resx">
-      <DependentUpon>Relogin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

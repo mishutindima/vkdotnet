@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.IO;
 using ApiCore.Utils.Authorization;
 using ApiCore.Utils.Authorization.Exceptions;
 
-namespace ApiCore
+namespace ApiCore.Utils.SessionManager
 {
     public delegate void SessionManagerLogHandler(object sender, string msg);
     public class SessionManager
@@ -49,21 +46,7 @@ namespace ApiCore
             }
         }
 
-        public SessionInfo ReLogin()
-        {
-            this.OnLog("Creating OAuth relogin wnd...");
-            Relogin relogin = new Relogin(this.AppId, this.Scope, AuthDisplay.Popup);
-            relogin.ShowDialog();
-            if (!relogin.LoginInfoReceived)
-            {
-                this.OnLog("Authorization failed!");
-                return null;
-            }
-            this.OnLog("Authorization successed!");
-            return relogin.SessionData;
-        }
-
-        public SessionInfo GetOAuthSession()
+        public SessionInfo GetOAuthSession(bool relogin)
         {
             this.OnLog("Creating OAuth login wnd...");
             OAuth auth = new OAuth();
@@ -71,7 +54,7 @@ namespace ApiCore
             try 
             {
                 this.OnLog("Authorization successed!");
-                return auth.Authorize(this.AppId, this.Scope, AuthDisplay.Popup.ToString());
+                return auth.Authorize(this.AppId, this.Scope, AuthDisplay.Popup, relogin);
             }
             catch(AuthorizationFailedException e)
             {
@@ -85,11 +68,5 @@ namespace ApiCore
             }
             return null;
         }
-        
-        public void CloseSession()
-        {
-        }
-
-
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IOAuthProvider
     {
-        SessionInfo Authorize(int appId, string scope, string display);
+        SessionInfo Authorize(int appId, string scope, string display, bool relogin);
     }
 }

@@ -12,6 +12,8 @@ using System.Diagnostics;
 using ApiCore;
 using ApiCore.Friends;
 using ApiCore.Photos;
+using ApiCore.Utils.SessionManager;
+using ApiCore.WinForms;
 
 namespace PhotoExplorer
 {
@@ -125,7 +127,7 @@ namespace PhotoExplorer
             if (!this.isLoggedIn)
             {
                 SessionManager sm = new SessionManager(1928531, Convert.ToInt32(ApiPerms.Audio | ApiPerms.ExtendedMessages | ApiPerms.ExtendedWall | ApiPerms.Friends | ApiPerms.Offers | ApiPerms.Photos | ApiPerms.Questions | ApiPerms.SendNotify | ApiPerms.SidebarLink | ApiPerms.UserNotes | ApiPerms.UserStatus | ApiPerms.Video | ApiPerms.WallPublisher | ApiPerms.Wiki));
-                this.sessionInfo = sm.GetOAuthSession();
+                this.sessionInfo = sm.GetOAuthSession(false);
                 if (this.sessionInfo != null)
                 {
                     this.isLoggedIn = true;
@@ -135,6 +137,7 @@ namespace PhotoExplorer
             if (this.isLoggedIn)
             {
                 manager = new ApiManager(this.sessionInfo);
+                manager.OnCapthaRequired += manager_OnCapthaRequired;
                 //manager.Log += new ApiManagerLogHandler(manager_Log);
                 //manager.DebugMode = true;
                 manager.Timeout = 10000;
@@ -149,6 +152,12 @@ namespace PhotoExplorer
                 this.GetFriendList();
             }
 
+        }
+
+        void manager_OnCapthaRequired(object sender, string url, string hash)
+        {
+            CapthaWnd wnd = new CapthaWnd(manager, url, hash);
+            wnd.ShowDialog();
         }
 
         private void GetFriendList()

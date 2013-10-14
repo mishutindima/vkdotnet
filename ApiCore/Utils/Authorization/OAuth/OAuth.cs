@@ -7,9 +7,9 @@ namespace ApiCore.Utils.Authorization
 {
     public class OAuth: IOAuthProvider
     {
-        public SessionInfo Authorize(int appId, string scope, string display)
+        public SessionInfo Authorize(int appId, string scope, string display, bool relogin)
         {
-            OAuthWnd wnd = new OAuthWnd(appId, scope, display);
+            OAuthWnd wnd = new OAuthWnd(appId, scope, display, relogin);
             wnd.ShowDialog();
             if (wnd.Authenticated)
                 return wnd.SessionData;

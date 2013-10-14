@@ -41,7 +41,6 @@
             this.LoginBrowser.Size = new System.Drawing.Size(573, 549);
             this.LoginBrowser.TabIndex = 0;
             this.LoginBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.LoginBrowser_Navigated);
-            this.LoginBrowser.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.LoginBrowser_Navigating);
             // 
             // BrowserAuthorization
             // 
