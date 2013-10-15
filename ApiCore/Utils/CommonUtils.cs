@@ -71,8 +71,8 @@ namespace ApiCore
         public static string[] ObjectsArrayToStringArray(object[] objects)
         {
             string[] strings = new string[objects.Length];
-            int i=0;
-            foreach(object o in objects)
+            int i = 0;
+            foreach (object o in objects)
             {
                 strings[i] = o.ToString();
                 i++;

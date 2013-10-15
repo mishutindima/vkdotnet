@@ -53,9 +53,18 @@
     <Compile Include="CapthaWnd.Designer.cs">
       <DependentUpon>CapthaWnd.cs</DependentUpon>
     </Compile>
+    <Compile Include="OAuthWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OAuthWnd.Designer.cs">
+      <DependentUpon>OAuthWnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CapthaWnd.resx">
       <DependentUpon>CapthaWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OAuthWnd.resx">
+      <DependentUpon>OAuthWnd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

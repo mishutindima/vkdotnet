@@ -42,26 +42,15 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="3rdParty\JSON.cs" />
-    <Compile Include="Handlers\BaseHandlers.cs" />
     <Compile Include="Utils\ApiPermissions.cs" />
     <Compile Include="Utils\Authorization\Exceptions\AuthorizationFailedException.cs" />
-    <Compile Include="Utils\Authorization\OAuth\OAuthWnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Utils\Authorization\OAuth\OAuthWnd.Designer.cs">
-      <DependentUpon>OAuthWnd.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utils\EntityBuilder.cs" />
     <Compile Include="Utils\Metadata.cs" />
     <Compile Include="Utils\QueryBuilders\ApiQueryBuilder.cs" />
-    <Compile Include="Utils\Authorization\AuthType.cs" />
-    <Compile Include="Utils\Authorization\IOAuthProvider.cs" />
-    <Compile Include="Utils\Authorization\IVKAuthProvider.cs" />
     <Compile Include="Utils\Authorization\OAuth\OAuth.cs" />
     <Compile Include="Utils\Authorization\AuthDisplay.cs" />
     <Compile Include="Utils\SessionManager\Sessions\OAuthSessionInfo.cs" />
@@ -142,11 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Wrappers\Video\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Utils\Authorization\OAuth\OAuthWnd.resx">
-      <DependentUpon>OAuthWnd.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

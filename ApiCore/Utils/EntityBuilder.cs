@@ -107,7 +107,7 @@ namespace ApiCore.Utils
 
                         if (meta.CastTo == null)
                         {
-                            System.Windows.Forms.MessageBox.Show(ff.Name + " = " + ff.FieldType.ToString());
+                            //System.Windows.Forms.MessageBox.Show(ff.Name + " = " + ff.FieldType.ToString());
                             if (fieldNode != null)
                             {
                                 ff.SetValue(instance, this.getKnownValue(ff, val));

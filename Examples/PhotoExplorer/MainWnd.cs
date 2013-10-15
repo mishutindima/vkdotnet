@@ -127,6 +127,7 @@ namespace PhotoExplorer
             if (!this.isLoggedIn)
             {
                 SessionManager sm = new SessionManager(1928531, Convert.ToInt32(ApiPerms.Audio | ApiPerms.ExtendedMessages | ApiPerms.ExtendedWall | ApiPerms.Friends | ApiPerms.Offers | ApiPerms.Photos | ApiPerms.Questions | ApiPerms.SendNotify | ApiPerms.SidebarLink | ApiPerms.UserNotes | ApiPerms.UserStatus | ApiPerms.Video | ApiPerms.WallPublisher | ApiPerms.Wiki));
+                sm.OAuthRequired += sm_OAuthRequired;
                 this.sessionInfo = sm.GetOAuthSession(false);
                 if (this.sessionInfo != null)
                 {
@@ -154,9 +155,16 @@ namespace PhotoExplorer
 
         }
 
+        void sm_OAuthRequired(object sender, OAuthEventArgs e)
+        {
+            var wnd = new OAuthWnd(e.Uries);
+            wnd.ShowDialog();
+            e.TokenResponse = wnd.TokenResponse;
+        }
+
         void manager_OnCapthaRequired(object sender, string url, string hash)
         {
-            CapthaWnd wnd = new CapthaWnd(manager, url, hash);
+            var wnd = new CapthaWnd(manager, url, hash);
             wnd.ShowDialog();
         }
 
